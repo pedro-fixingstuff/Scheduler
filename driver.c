@@ -10,8 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "task.h"
-#include "list.h"
 #include "schedule_rr_p.h"
 #include "schedule_edf.h"
 
@@ -36,7 +34,7 @@ int main(int argc, char *argv[])
         priority = atoi(strsep(&temp,","));
         burst = atoi(strsep(&temp,","));
         //Only to EDF algorithm
-        deadline = atoi(srtsep(&temp, ","));
+        deadline = atoi(strsep(&temp, ","));
 
         // add the task to the scheduler's list of tasks
         add(name,priority,burst);

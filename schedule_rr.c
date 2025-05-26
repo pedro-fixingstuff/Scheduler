@@ -1,21 +1,21 @@
 #include <pthread.h>
 #include <stdio.h>
+#include "CPU.h"
 #include "schedule_rr.h"
-#include "list.h"
 
 // add a task to the list 
 void add(char *name, int burst) {
    struct task newTask;
    newTask.name = name;
    newTask.tid = nextTid;
-   newTask.priority = NULL;
+   newTask.priority = -1;
    newTask.burst = burst;
-   newTask.deadline = NULL;
+   newTask.deadline = -1;
 
    nextTid++;
 
    struct node *listEnd = end(taskList);
-   insert(listEnd, &newTask);
+   insert(&listEnd, &newTask);
 }
 
 // invoke the scheduler
@@ -28,7 +28,7 @@ void schedule(){
 
       // remove the task from the list and run it
       delete(&taskList, task);
-      if (pthread_create(&timer_tid, NULL, run(), task) != 0) {
+      if (pthread_create(&timer_tid, NULL, run, task) != 0) {
          perror("Error: Failed to create timer thread.");
          return;
       }
@@ -37,7 +37,7 @@ void schedule(){
       if (task->burst > 0) {
          // task is not completed, reinsert it at the end of the list
          struct node *listEnd = end(taskList);
-         insert(listEnd, task);
+         insert(&listEnd, task);
       }
    }
 }

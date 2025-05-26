@@ -4,11 +4,10 @@
 
 #include <stdio.h>
 
-#include "task.h"
 #include "CPU.h"
 
 // run this task for the specified time slice
-void run(Task *task, int slice) {
+void *run(Task *task, int slice) {
     if (slice == NULL) {
         slice = QUANTUM; // default time slice if not specified
     }

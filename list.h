@@ -9,7 +9,7 @@ struct node {
     struct node *next;
 };
 
-// return a pointer to the end of the list
+// return
 struct node *end(struct node *head);
 
 // insert and delete operations.
