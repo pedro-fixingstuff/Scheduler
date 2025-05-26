@@ -10,7 +10,7 @@ void add(char *name, int priority, int burst) {
    newTask.tid = nextTid;
    newTask.priority = priority;
    newTask.burst = burst;
-   newTask.deadline = 0; // deadline is not used in RR scheduling
+   newTask.deadline = NULL;
 
    nextTid++;
 
@@ -20,7 +20,7 @@ void add(char *name, int priority, int burst) {
    }
 
    // insert the new task into the appropriate priority list
-   struct node *head = lists[priority - MIN_PRIORITY];
+   struct node *head = taskLists[priority - MIN_PRIORITY];
    struct node *listEnd = end(head);
 
    insert(listEnd, &newTask);
@@ -35,8 +35,8 @@ void schedule(){
       int hasTasks = 0;
       // get the first task from the highest-priority list with tasks
       for (int i = 0; i < MAX_PRIORITY - MIN_PRIORITY + 1; i++) {
-         if (lists[i] != NULL) {
-            head = lists[i];
+         if (taskLists[i] != NULL) {
+            head = taskLists[i];
             hasTasks = 1;
             break;
          }

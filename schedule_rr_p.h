@@ -4,7 +4,7 @@
 #include "list.h"
 
 // list of lists structure for different priorities
-struct node *lists[MAX_PRIORITY - MIN_PRIORITY + 1] = {NULL};
+struct node *taskLists[MAX_PRIORITY - MIN_PRIORITY + 1] = {NULL};
 
 int nextTid = 0; // id of the next task to be added
 
