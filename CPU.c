@@ -7,9 +7,14 @@
 #include "CPU.h"
 
 // run this task for the specified time slice
-void *run(Task *task, int slice) {
-    if (slice == NULL) {
-        slice = QUANTUM; // default time slice if not specified
+void *run(void *args) {
+    // cast arguments
+    ThreadArgs *threadArgs = (ThreadArgs *)args;
+    Task *task = threadArgs->task;
+    int slice = threadArgs->slice;
+
+    if (slice < 0) {
+        slice = task->burst; // if no valid slice is provided, run for the entire burst time
     }
 
     printf("Running task = [%s] [%d] [%d] for %d units.\n",task->name, task->priority, task->burst, slice);

@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "list.h"
 
-// list of lists structure for different priorities
 struct node *taskList = NULL;
 
 int nextTid = 0; // id of the next task to be added

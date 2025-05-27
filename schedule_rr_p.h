@@ -1,6 +1,7 @@
 #define MIN_PRIORITY 1
 #define MAX_PRIORITY 10
 
+#include <stdio.h>
 #include "list.h"
 
 // list of lists structure for different priorities

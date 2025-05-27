@@ -21,6 +21,7 @@ void add(char *name, int burst) {
 // invoke the scheduler
 void schedule(){
    pthread_t timer_tid;
+   ThreadArgs args;
 
    while (taskList != NULL) {
       // get the task from the head of the list
@@ -28,7 +29,10 @@ void schedule(){
 
       // remove the task from the list and run it
       delete(&taskList, task);
-      if (pthread_create(&timer_tid, NULL, run, task) != 0) {
+
+      args.task = task;
+      args.slice = QUANTUM;
+      if (pthread_create(&timer_tid, NULL, run, &args) != 0) {
          perror("Error: Failed to create timer thread.");
          return;
       }
