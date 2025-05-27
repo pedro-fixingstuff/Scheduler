@@ -19,7 +19,8 @@ void add(char *name, int priority, int burst, int deadline) {
    nextTid++;
 
    if (priority < MIN_PRIORITY || priority > MAX_PRIORITY) {
-      fprintf(stderr, "Error: Priority out of range.\n");
+      fprintf(stderr, "Error: Priority [%d] for the task [%s] out of range (%d-%d).\n",
+              priority, name, MIN_PRIORITY, MAX_PRIORITY);
       return;
    }
 

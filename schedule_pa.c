@@ -13,20 +13,20 @@ int nextTid = 0;
 
 void add(char *name, int priority, int burst, int deadline) {
     if (priority < MIN_PRIORITY || priority > MAX_PRIORITY) {
-        fprintf(stderr, "Erro: Prioridade [%d] para a tarefa [%s] fora do intervalo válido (%d-%d).\n",
+        fprintf(stderr, "Error: Priority [%d] for the task [%s] out of range (%d-%d).\n",
                 priority, name, MIN_PRIORITY, MAX_PRIORITY);
         return;
     }
 
     Task *newTask = (Task *)malloc(sizeof(Task));
     if (newTask == NULL) {
-        fprintf(stderr, "Erro: Falha ao alocar memória para a nova tarefa [%s].\n", name);
+        fprintf(stderr, "Error: Failed to allocate memory for task [%s].\n", name);
         return;
     }
 
     newTask->name = strdup(name);
     if (newTask->name == NULL) {
-        fprintf(stderr, "Erro: Falha ao duplicar o nome para a tarefa [%s].\n", name);
+        fprintf(stderr, "Error: Failed to assign name to task [%s].\n", name);
         free(newTask);
         return;
     }
@@ -52,8 +52,6 @@ void schedule() {
     int original_burst_before_run;
     int actual_time_run;
 
-    printf("\n--- Iniciando Escalonador de Prioridade com Aging ---\n");
-
     while (1) {
         task_to_run = NULL;
         int current_task_priority_index = -1;
@@ -67,7 +65,6 @@ void schedule() {
         }
 
         if (task_to_run == NULL) {
-            printf("Nenhuma tarefa restante para escalonar. Encerrando o escalonador.\n");
             break;
         }
 
@@ -83,7 +80,7 @@ void schedule() {
         //        task_to_run->name, task_to_run->priority, original_burst_before_run, args.slice);
 
         if (pthread_create(&timer_tid, NULL, run, &args) != 0) {
-            perror("Erro crítico: Falha ao criar a thread de execução da tarefa.");
+            perror("Error: Failed to create timer thread.");
 
             if (task_to_run->name) free(task_to_run->name);
             free(task_to_run);
