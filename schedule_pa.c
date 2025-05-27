@@ -4,12 +4,14 @@
 #include <string.h>
 
 #include "CPU.h"
-#include "schedule_pa.h"
+#include "schedulers.h"
+
+#define AGING_THRESHOLD 150
 
 struct node *taskLists[MAX_PRIORITY - MIN_PRIORITY + 1] = {NULL};
 int nextTid = 0;
 
-void add(char *name, int priority, int burst) {
+void add(char *name, int priority, int burst, int deadline) {
     if (priority < MIN_PRIORITY || priority > MAX_PRIORITY) {
         fprintf(stderr, "Erro: Prioridade [%d] para a tarefa [%s] fora do intervalo válido (%d-%d).\n",
                 priority, name, MIN_PRIORITY, MAX_PRIORITY);
@@ -32,7 +34,7 @@ void add(char *name, int priority, int burst) {
     newTask->tid = nextTid++;
     newTask->priority = priority;
     newTask->burst = burst;
-    newTask->deadline = -1;
+    newTask->deadline = deadline;
     newTask->time_since_last_run = 0;
 
     int priority_index = priority - MIN_PRIORITY;

@@ -1,16 +1,20 @@
 #include <pthread.h>
 #include <stdio.h>
 #include "CPU.h"
-#include "schedule_rr_p.h"
+#include "schedulers.h"
+
+// list of lists structure for different priorities
+struct node *taskLists[MAX_PRIORITY - MIN_PRIORITY + 1] = {NULL};
+int nextTid = 0;
 
 // add a task to the list 
-void add(char *name, int priority, int burst) {
+void add(char *name, int priority, int burst, int deadline) {
    struct task newTask;
    newTask.name = name;
    newTask.tid = nextTid;
    newTask.priority = priority;
    newTask.burst = burst;
-   newTask.deadline = -1;
+   newTask.deadline = deadline;
 
    nextTid++;
 

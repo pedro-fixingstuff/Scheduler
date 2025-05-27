@@ -24,4 +24,6 @@ void *run(void *args) {
     } else {
         task->burst = 0; // task is completed
     }
+
+    return NULL;
 }
