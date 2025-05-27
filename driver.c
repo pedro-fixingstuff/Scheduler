@@ -10,8 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "schedule_rr.h"
 #include "schedule_rr_p.h"
 #include "schedule_edf.h"
+#include "schedule_pa.h"
 
 #define SIZE    100
 
@@ -39,7 +41,7 @@ int main(int argc, char *argv[])
         // add the task to the scheduler's list of tasks
         add(name,priority,burst);
         //to EDF only
-        add(name,priority,burst, deadline);
+        //add(name,priority,burst, deadline);
 
         free(temp);
     }
