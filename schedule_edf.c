@@ -56,5 +56,9 @@ void schedule(){
          return;
       }
       pthread_join(timer_tid, NULL); // wait for the timer thread to finish
+
+      // task is completed, free its resources
+      free(task->name);
+      free(task);
    }
 }
