@@ -1,6 +1,3 @@
-#include <pthread.h>
-#include <stdio.h>
-#include "CPU.h"
 #include "schedulers.h"
 
 struct node *taskList = NULL;
@@ -8,17 +5,28 @@ int nextTid = 0;
 
 // add a task to the list 
 void add(char *name, int priority, int burst, int deadline) {
-   struct task newTask;
-   newTask.name = name;
-   newTask.tid = nextTid;
-   newTask.priority = priority;
-   newTask.burst = burst;
-   newTask.deadline = deadline;
+   Task *newTask = (Task *)malloc(sizeof(Task));
+   if (newTask == NULL) {
+      fprintf(stderr, "Error: Failed to allocate memory for task [%s].\n", name);
+      return;
+   }
+
+   newTask->name = strdup(name);
+   if (newTask->name == NULL) {
+      fprintf(stderr, "Error: Failed to assign name to task [%s].\n", name);
+      free(newTask);
+      return;
+   }
+
+   newTask->tid = nextTid;
+   newTask->priority = priority;
+   newTask->burst = burst;
+   newTask->deadline = deadline;
 
    nextTid++;
 
    struct node *listEnd = end(taskList);
-   insert(&listEnd, &newTask);
+   insert(&listEnd, newTask);
 }
 
 // invoke the scheduler

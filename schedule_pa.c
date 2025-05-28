@@ -1,9 +1,3 @@
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "CPU.h"
 #include "schedulers.h"
 
 #define AGING_THRESHOLD 150
@@ -31,11 +25,13 @@ void add(char *name, int priority, int burst, int deadline) {
         return;
     }
 
-    newTask->tid = nextTid++;
+    newTask->tid = nextTid;
     newTask->priority = priority;
     newTask->burst = burst;
     newTask->deadline = deadline;
     newTask->time_since_last_run = 0;
+
+    nextTid++;
 
     int priority_index = priority - MIN_PRIORITY;
 

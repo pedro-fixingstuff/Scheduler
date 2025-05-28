@@ -17,6 +17,7 @@
 int main(int argc, char *argv[])
 {
     FILE *in;
+    char *line;
     char *temp;
     char task[SIZE];
 
@@ -28,7 +29,10 @@ int main(int argc, char *argv[])
     in = fopen(argv[1],"r");
     
     while (fgets(task,SIZE,in) != NULL) {
-        temp = strdup(task);
+        // copy the task line to save the pointer for later
+        line = strdup(task);
+        temp = line;
+
         name = strsep(&temp,",");
         priority = atoi(strsep(&temp,","));
         burst = atoi(strsep(&temp,","));
@@ -37,7 +41,7 @@ int main(int argc, char *argv[])
         // add the task to the scheduler's list of tasks
         add(name, priority, burst, deadline);
 
-        free(temp);
+        free(line);
     }
 
     fclose(in);
