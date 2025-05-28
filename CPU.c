@@ -13,11 +13,12 @@ void *run(void *args) {
     Task *task = threadArgs->task;
     int slice = threadArgs->slice;
 
-    if (task->burst < slice) {
-        slice = task->burst; // if the slice is larger than the burst time, run for the burst time
+    // if the slice is larger than the burst time or no valid burst is provided, run for the burst time
+    if (task->burst < slice || slice < 0) {
+        slice = task->burst;
     }
 
-    printf("Running task = [%s] [%d] [%d] for %d units.\n",task->name, task->priority, task->burst, slice);
+    printf("Running task = [%s] [%d] [%d] [%d] for %d units.\n",task->name, task->priority, task->burst, task->deadline, slice);
 
     if (task->burst > slice) {
         task->burst -= slice; // reduce the burst time by the time slice

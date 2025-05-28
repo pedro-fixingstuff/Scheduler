@@ -25,8 +25,7 @@ void add(char *name, int priority, int burst, int deadline) {
 
    nextTid++;
 
-   struct node *listEnd = end(taskList);
-   insert(&listEnd, newTask);
+   insert(&taskList, newTask);
 }
 
 // invoke the scheduler
@@ -36,17 +35,17 @@ void schedule(){
    args.slice = -1; // not used
 
    while (taskList != NULL) {
-      struct node *node = taskList;
-
       // find the task with the earliest deadline
-      while (node->next != NULL) {
-         struct node *nextNode = node->next;
-         if (nextNode->task->deadline < node->task->deadline) {
-            node = nextNode;
+      struct node *earliestNode = taskList;
+      struct node *temp = taskList;
+      while (temp != NULL) {
+         if (temp->task->deadline <= earliestNode->task->deadline) {
+            earliestNode = temp;
          }
+         temp = temp->next;
       }
 
-      Task *task = node->task;
+      Task *task = earliestNode->task;
 
       // remove the task from the list and run it
       delete(&taskList, task);
@@ -57,11 +56,5 @@ void schedule(){
          return;
       }
       pthread_join(timer_tid, NULL); // wait for the timer thread to finish
-
-      if (task->burst > 0) {
-         // task is not completed, reinsert it at the end of the list
-         struct node *listEnd = end(taskList);
-         insert(&listEnd, task);
-      }
    }
 }
