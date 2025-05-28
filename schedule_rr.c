@@ -53,5 +53,10 @@ void schedule(){
          // task is not completed, reinsert it at the head of the list
          insert(&taskList, task);
       }
+      else {
+         // task is completed, free its resources
+         free(task->name);
+         free(task);
+      }
    }
 }
