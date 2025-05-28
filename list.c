@@ -10,11 +10,11 @@
 #include "task.h"
 
 
-// return a pointer to the end of the list
+// return the last element of the list
 struct node *end(struct node *head) {
     struct node *temp = head;
 
-    while (temp != NULL) {
+    while (temp->next != NULL) {
         temp = temp->next;
     }
 
