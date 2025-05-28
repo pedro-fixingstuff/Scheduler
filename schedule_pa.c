@@ -1,18 +1,18 @@
 #include "schedulers.h"
 
-#define AGING_THRESHOLD 150
+#define AGING_THRESHOLD 50
 
-struct node *taskLists[MAX_PRIORITY - MIN_PRIORITY + 1] = {NULL};
+struct node* taskLists[MAX_PRIORITY - MIN_PRIORITY + 1] = { NULL };
 int nextTid = 0;
 
-void add(char *name, int priority, int burst, int deadline) {
+void add(char* name, int priority, int burst, int deadline) {
     if (priority < MIN_PRIORITY || priority > MAX_PRIORITY) {
         fprintf(stderr, "Error: Priority [%d] for the task [%s] out of range (%d-%d).\n",
-                priority, name, MIN_PRIORITY, MAX_PRIORITY);
+            priority, name, MIN_PRIORITY, MAX_PRIORITY);
         return;
     }
 
-    Task *newTask = (Task *)malloc(sizeof(Task));
+    Task* newTask = (Task*)malloc(sizeof(Task));
     if (newTask == NULL) {
         fprintf(stderr, "Error: Failed to allocate memory for task [%s].\n", name);
         return;
@@ -44,7 +44,7 @@ void add(char *name, int priority, int burst, int deadline) {
 void schedule() {
     pthread_t timer_tid;
     ThreadArgs args;
-    Task *task_to_run = NULL;
+    Task* task_to_run = NULL;
     int original_burst_before_run;
     int actual_time_run;
 
@@ -87,11 +87,11 @@ void schedule() {
         actual_time_run = original_burst_before_run - task_to_run->burst;
 
         for (int p_idx = 0; p_idx <= (MAX_PRIORITY - MIN_PRIORITY); p_idx++) {
-            struct node *current_node = taskLists[p_idx];
+            struct node* current_node = taskLists[p_idx];
             while (current_node != NULL) {
-                Task *other_task = current_node->task;
+                Task* other_task = current_node->task;
 
-                struct node *next_node_in_iteration = current_node->next;
+                struct node* next_node_in_iteration = current_node->next;
 
 
                 other_task->time_since_last_run += actual_time_run;
@@ -124,8 +124,9 @@ void schedule() {
             //        task_to_run->name, task_to_run->burst, task_to_run->priority);
 
             insert(&taskLists[task_to_run->priority - MIN_PRIORITY], task_to_run);
-        } else {
-            // printf("Escalonador: Tarefa [%s] concluída.\n", task_to_run->name);
+        }
+        else {
+         // printf("Escalonador: Tarefa [%s] concluída.\n", task_to_run->name);
             if (task_to_run->name) free(task_to_run->name);
             free(task_to_run);
         }
