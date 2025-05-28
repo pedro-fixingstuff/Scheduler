@@ -6,6 +6,12 @@ int nextTid = 0;
 
 // add a task to the list 
 void add(char *name, int priority, int burst, int deadline) {
+   if (priority < MIN_PRIORITY || priority > MAX_PRIORITY) {
+      fprintf(stderr, "Error: Priority [%d] for the task [%s] out of range (%d-%d).\n",
+              priority, name, MIN_PRIORITY, MAX_PRIORITY);
+      return;
+   }
+
    Task *newTask = (Task *)malloc(sizeof(Task));
    if (newTask == NULL) {
       fprintf(stderr, "Error: Failed to allocate memory for task [%s].\n", name);
@@ -25,12 +31,6 @@ void add(char *name, int priority, int burst, int deadline) {
    newTask->deadline = deadline;
 
    nextTid++;
-
-   if (priority < MIN_PRIORITY || priority > MAX_PRIORITY) {
-      fprintf(stderr, "Error: Priority [%d] for the task [%s] out of range (%d-%d).\n",
-              priority, name, MIN_PRIORITY, MAX_PRIORITY);
-      return;
-   }
 
    // insert the new task into the appropriate priority list
    struct node *head = taskLists[priority - MIN_PRIORITY];

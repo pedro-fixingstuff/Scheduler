@@ -57,5 +57,11 @@ void schedule(){
          return;
       }
       pthread_join(timer_tid, NULL); // wait for the timer thread to finish
+
+      if (task->burst > 0) {
+         // task is not completed, reinsert it at the end of the list
+         struct node *listEnd = end(taskList);
+         insert(&listEnd, task);
+      }
    }
 }
